@@ -1,0 +1,19 @@
+{
+  "name": "Online Alert",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Displays a notification when you go online.",
+  "permissions": [
+    "notifications",
+    "tabs",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "icons": {
+    "128": "icons8-wi-fi-96.png"
+ },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  }
+}

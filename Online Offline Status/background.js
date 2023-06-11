@@ -1,0 +1,88 @@
+// Listen for the online and offline events
+// window.addEventListener('online', () => {
+//   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+// 	// alert(navigator.onLine);
+//     chrome.notifications.create({
+//       type: 'basic',
+//       iconUrl: 'icon.png',
+//       title: 'Online Alert',
+//       message: 'You are now online!'
+//     });
+//   });
+// });
+
+// window.addEventListener('offline', () => {
+//   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+// 	// alert(navigator.onLine);
+//     chrome.notifications.create({
+//       type: 'basic',
+//       iconUrl: 'icon.png',
+//       title: 'Offline Alert',
+//       message: 'You are now offline!'
+//     });
+//   });
+// });
+
+setInterval(function () {
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, (tabs) => {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://api.ipify.org'); // /?format=json
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    networkStatus('Online');
+                } else {
+                    networkStatus('Offline');
+                }
+            }
+        };
+        xhr.send();
+    });
+
+}, 30000);
+
+
+function networkStatus(status) {
+    const xhr = new XMLHttpRequest();
+    if (localStorage.getItem('network_status') == 'Online' && status == 'Offline') {
+        xhr.open('GET', 'http://desktop-i1780c6/net-log/?status=' + status);
+        xhr.timeout = 5000;
+        xhr.send();
+        var myAudio = new Audio();
+        myAudio.src = "LISTEN--C2pMy3vXcI.mp3";
+        myAudio.play();
+        chrome.tabs.query({
+            active: true,
+            currentWindow: true
+        }, (tabs) => {
+            chrome.notifications.create({
+                type: 'basic',
+                iconUrl: 'icon.png',
+                title: 'Offline Alert',
+                message: 'You are now offline!'
+            });
+        });
+    } else if (localStorage.getItem('network_status') == 'Offline' && status == 'Online') {
+        xhr.open('GET', 'http://desktop-i1780c6/net-log/?status=' + status);
+        xhr.timeout = 5000;
+        xhr.send();
+        var myAudio = new Audio();
+        myAudio.src = "LISTEN--3HPE9u3tS3.mp3";
+        myAudio.play();
+        chrome.tabs.query({
+            active: true,
+            currentWindow: true
+        }, (tabs) => {
+            chrome.notifications.create({
+                type: 'basic',
+                iconUrl: 'icon.png',
+                title: 'Online Alert',
+                message: 'You are now online!'
+            });
+        });
+    }
+    localStorage.setItem('network_status', status)
+}
