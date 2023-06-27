@@ -29,7 +29,10 @@ setInterval(function () {
         currentWindow: true
     }, (tabs) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://api.ipify.org'); // /?format=json
+        // xhr.open('GET', 'https://api.ipify.org'); // /?format=json
+        xhr.open('GET', 'https://www.instagram.com/favicon.ico'); // /?format=json
+        // xhr.open('GET', 'https://www.google.com/favicon.ico'); // /?format=json
+        xhr.timeout = 5000;
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
@@ -42,7 +45,7 @@ setInterval(function () {
         xhr.send();
     });
 
-}, 30000);
+}, 3000);
 
 
 function networkStatus(status) {
