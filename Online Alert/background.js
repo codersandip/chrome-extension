@@ -1,37 +1,12 @@
-// Listen for the online and offline events
-// window.addEventListener('online', () => {
-//   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-// 	// alert(navigator.onLine);
-//     chrome.notifications.create({
-//       type: 'basic',
-//       iconUrl: 'icon.png',
-//       title: 'Online Alert',
-//       message: 'You are now online!'
-//     });
-//   });
-// });
-
-// window.addEventListener('offline', () => {
-//   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-// 	// alert(navigator.onLine);
-//     chrome.notifications.create({
-//       type: 'basic',
-//       iconUrl: 'icon.png',
-//       title: 'Offline Alert',
-//       message: 'You are now offline!'
-//     });
-//   });
-// });
-
-setInterval(function () {
+function check() {
     chrome.tabs.query({
         active: true,
         currentWindow: true
     }, (tabs) => {
         const xhr = new XMLHttpRequest();
         // xhr.open('GET', 'https://api.ipify.org'); // /?format=json
-        xhr.open('GET', 'https://www.instagram.com/favicon.ico'); // /?format=json
-        // xhr.open('GET', 'https://www.google.com/favicon.ico'); // /?format=json
+        // xhr.open('GET', 'https://www.instagram.com/favicon.ico'); // /?format=json
+        xhr.open('GET', 'https://www.google.com/favicon.ico'); // /?format=json
         xhr.timeout = 5000;
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -40,13 +15,15 @@ setInterval(function () {
                 } else {
                     networkStatus('Offline');
                 }
+                setTimeout(() => {
+                    check();
+                }, 5000);
             }
         };
         xhr.send();
     });
-
-}, 3000);
-
+}
+check();
 
 function networkStatus(status) {
     const xhr = new XMLHttpRequest();
